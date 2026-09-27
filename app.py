@@ -16,6 +16,7 @@ def _json_serializer(obj):
         return obj.item()
     raise TypeError(f"Type {type(obj)} is not JSON serializable")
 
+<<<<<<< Updated upstream
 
 def get_app_schema_json() -> str:
     return json.dumps({
@@ -31,3 +32,10 @@ def run_converter_json(converter_id: str, params_json: str) -> str:
     if converter_id == "dab":
         return json.dumps(compute_dab_view(params), default=_json_serializer)
     return json.dumps({"error": f"{converter_id} is under development."})
+=======
+# Route to the selected subsection
+if converter_choice == "DAB Converter":
+    render_dab_subsection()
+else:
+    st.info(f"🚧 The **{converter_choice}** module is under development.")
+>>>>>>> Stashed changes
