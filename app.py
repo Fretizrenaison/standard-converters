@@ -1,33 +1,33 @@
-import streamlit as st
-from views.dab_view import render_dab_subsection
+import json
+from views.dab_view import DAB_CONFIG, compute_dab_view
 
-st.set_page_config(
-    page_title="Standard Converters",
-    layout="wide",
-    page_icon="⚡"
-)
+CONVERTER_REGISTRY = [
+    {"id": "dab",     "name": "DAB Converter",                   "active": True},
+    {"id": "buck",    "name": "BUCK Converter (Coming Soon)",    "active": False},
+    {"id": "flyback", "name": "FLYBACK Converter (Coming Soon)", "active": False},
+]
 
-# Main Application Branding in Sidebar
-st.sidebar.title("⚡ Standard Converters")
-st.sidebar.caption("The Standard Converters Project")
 
-# Subsection Navigation Selector
-converter_choice = st.sidebar.selectbox(
-    "Select Converter Topology",
-    options=[
-        "DAB Converter",
-        "BUCK Converter (Coming Soon)",
-        "FLYBACK Converter (Coming Soon)"
-    ]
-)
-st.sidebar.divider()
-st.sidebar.caption(
-    "Licensed under **AGPLv3** · "
-    "[Source Code](https://github.com/Fretizrenaison/standard-converters)"
-)
+def _json_serializer(obj):
+    """Standard serializer for NumPy arrays and floating-point scalars."""
+    if hasattr(obj, "tolist"):
+        return obj.tolist()
+    if hasattr(obj, "item"):
+        return obj.item()
+    raise TypeError(f"Type {type(obj)} is not JSON serializable")
 
-# Route to the selected subsection
-if converter_choice == "DAB Converter":
-    render_dab_subsection()
-else:
-    st.info(f"🚧 The **{converter_choice}** module is under development for The Standard Converters Project.")
+
+def get_app_schema_json() -> str:
+    return json.dumps({
+        "converters": CONVERTER_REGISTRY,
+        "configs": {
+            "dab": DAB_CONFIG
+        }
+    }, default=_json_serializer)
+
+
+def run_converter_json(converter_id: str, params_json: str) -> str:
+    params = json.loads(params_json)
+    if converter_id == "dab":
+        return json.dumps(compute_dab_view(params), default=_json_serializer)
+    return json.dumps({"error": f"{converter_id} is under development."})
