@@ -1,4 +1,5 @@
 --The Standard Converters Project--
+An open-source power electronics converter design suite running client-side via WebAssembly.
 
 ## License
 
