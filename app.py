@@ -23,7 +23,7 @@ converter_choice = st.sidebar.selectbox(
 st.sidebar.divider()
 st.sidebar.caption(
     "Licensed under **AGPLv3** · "
-    "[Source Code](https://github.com/<your-github-username>/standard-converters)"
+    "[Source Code](https://github.com/Fretizrenaison/standard-converters)"
 )
 
 # Route to the selected subsection
